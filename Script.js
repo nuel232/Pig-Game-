@@ -68,7 +68,6 @@ btnRoll.addEventListener("click", function () {
 btnHold.addEventListener("click", function () {
   if (playing) {
     // add the current score of the active player to their global score
-
     scores[activePlayer] += currentScore;
     //scores[i] = score [i]+ currentScore;
     document.getElementById(`score--${activePlayer}`).textContent =
