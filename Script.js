@@ -28,20 +28,6 @@ class PigGame {
       btnNew: document.querySelector('.btn--new'),
       btnRoll: document.querySelector('.btn--roll'),
       btnHold: document.querySelector('.btn--hold'),
-      btnSettings: document.querySelector('.btn--settings'),
-      btnHelp: document.querySelector('.btn--help'),
-      
-      // Modal elements
-      settingsModal: document.querySelector('.modal--settings'),
-      helpModal: document.querySelector('.modal--help'),
-      overlay: document.querySelector('.overlay'),
-      closeModalBtns: document.querySelectorAll('.modal__close'),
-      saveSettingsBtn: document.querySelector('.btn--save-settings'),
-      
-      // Settings inputs
-      player1NameInput: document.getElementById('player1-name'),
-      player2NameInput: document.getElementById('player2-name'),
-      winningScoreInput: document.getElementById('winning-score'),
     };
 
     // Game state
@@ -94,100 +80,25 @@ class PigGame {
     
     // Enable buttons
     this.enableGameControls();
-    
-    // Initialize settings form values
-    this.initSettingsForm();
-  }
-
-  /**
-   * Initialize settings form with current values
-   */
-  initSettingsForm() {
-    this.elements.player1NameInput.value = this.state.playerNames[0];
-    this.elements.player2NameInput.value = this.state.playerNames[1];
-    this.elements.winningScoreInput.value = this.state.winningScore;
   }
 
   /**
    * Set up all event listeners
    */
   setupEventListeners() {
-    // Game controls
     this.elements.btnNew.addEventListener('click', () => this.init());
     this.elements.btnRoll.addEventListener('click', () => this.rollDice());
     this.elements.btnHold.addEventListener('click', () => this.holdScore());
-    
-    // Modal controls
-    this.elements.btnSettings.addEventListener('click', () => this.openModal('settings'));
-    this.elements.btnHelp.addEventListener('click', () => this.openModal('help'));
-    this.elements.overlay.addEventListener('click', () => this.closeAllModals());
-    
-    // Close modals
-    this.elements.closeModalBtns.forEach(btn => {
-      btn.addEventListener('click', () => this.closeAllModals());
-    });
-    
-    // Save settings
-    this.elements.saveSettingsBtn.addEventListener('click', () => this.saveSettings());
     
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => this.handleKeyPress(e));
   }
 
   /**
-   * Open a specific modal
-   */
-  openModal(type) {
-    if (type === 'settings') {
-      this.elements.settingsModal.classList.remove('hidden');
-    } else if (type === 'help') {
-      this.elements.helpModal.classList.remove('hidden');
-    }
-    
-    this.elements.overlay.classList.remove('hidden');
-  }
-
-  /**
-   * Close all modals
-   */
-  closeAllModals() {
-    this.elements.settingsModal.classList.add('hidden');
-    this.elements.helpModal.classList.add('hidden');
-    this.elements.overlay.classList.add('hidden');
-  }
-
-  /**
-   * Save settings from form
-   */
-  saveSettings() {
-    // Get values from form
-    const player1Name = this.elements.player1NameInput.value.trim() || 'Player 1';
-    const player2Name = this.elements.player2NameInput.value.trim() || 'Player 2';
-    const winningScore = parseInt(this.elements.winningScoreInput.value) || 100;
-    
-    // Validate winning score
-    const validatedScore = Math.max(20, Math.min(300, winningScore));
-    
-    // Update state
-    this.setPlayerNames([player1Name, player2Name]);
-    this.setWinningScore(validatedScore);
-    
-    // Close modal
-    this.closeAllModals();
-  }
-
-  /**
    * Handle keyboard shortcuts
    */
   handleKeyPress(e) {
-    // Close modals with Escape key
-    if (e.key === 'Escape') {
-      this.closeAllModals();
-      return;
-    }
-    
-    // Game controls (only when playing and no modals are open)
-    if (!this.state.playing || !this.elements.settingsModal.classList.contains('hidden')) return;
+    if (!this.state.playing) return;
     
     switch(e.key) {
       case 'r':
@@ -397,4 +308,4 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Expose game instance to window for console debugging if needed
   window.pigGame = game;
-});
+}); 
